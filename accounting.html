@@ -1,0 +1,75 @@
+<!doctype html>
+
+<html ng-app="app">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-touch.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+<script src="angular-ui-grid/ui-grid.js"></script>
+ <script src="matchinggrid.js"></script>
+<script type="text/javascript" src="web3/dist/web3.js"></script>
+
+
+<link rel="styleSheet" href="angular-ui-grid/ui-grid.css"/>
+<link rel="styleSheet" href="main.css"/>
+<script type="text/javascript">
+
+    var Web3 = require('web3');
+    var web3 = new Web3();
+    web3.setProvider(new web3.providers.HttpProvider("http://localhost:8085"));
+
+
+var tradeStatusContractabi = web3.eth.contract([{"constant":false,"inputs":[],"name":"getFundShortName","outputs":[{"name":"fundShortName","type":"string"}],"type":"function"},{"constant":false,"inputs":[],"name":"getInstrumentId","outputs":[{"name":"instrumentId","type":"string"}],"type":"function"},{"constant":false,"inputs":[],"name":"getTradeStatus","outputs":[{"name":"status","type":"string"}],"type":"function"},{"constant":false,"inputs":[],"name":"getTradeId","outputs":[{"name":"tradeId","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"status","type":"string"}],"name":"updateStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"getTradeDate","outputs":[{"name":"tradeDate","type":"string"}],"type":"function"},{"constant":false,"inputs":[],"name":"getTradingDesk","outputs":[{"name":"tradeDesk","type":"string"}],"type":"function"},{"inputs":[{"name":"tradeId","type":"uint256"},{"name":"tradeStatus","type":"string"},{"name":"tradeDate","type":"string"},{"name":"tradeDesk","type":"string"},{"name":"fundShortName","type":"string"},{"name":"instrumentId","type":"string"}],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"tradeId","type":"uint256"},{"indexed":false,"name":"recipient","type":"address"}],"name":"Received","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"tradeId","type":"uint256"},{"indexed":false,"name":"recipient","type":"address"},{"indexed":false,"name":"status","type":"string"}],"name":"StatusUpdated","type":"event"}]);
+var traderegistrarContractabi = web3.eth.contract([{"constant":true,"inputs":[{"name":"_addr","type":"address"}],"name":"name","outputs":[{"name":"o_tradeId","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"_tradeId","type":"string"}],"name":"disown","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"_tradeId","type":"string"},{"name":"_newOwner","type":"address"}],"name":"setOwner","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_tradeId","type":"string"}],"name":"addr","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[{"name":"_tradeId","type":"string"}],"name":"subRegistrar","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[{"name":"_tradeId","type":"string"},{"name":"_a","type":"address"}],"name":"setAddress","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"_tradeId","type":"string"}],"name":"reserve","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"Registrar","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"_tradeId","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"_tradeId","type":"string"},{"name":"_registrar","type":"address"}],"name":"setSubRegistrar","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_tradeId","type":"string"}],"name":"content","outputs":[{"name":"","type":"bytes32"}],"type":"function"},{"constant":true,"inputs":[{"name":"_tradeId","type":"string"}],"name":"owner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[{"name":"_tradeId","type":"string"},{"name":"_content","type":"bytes32"}],"name":"setContent","outputs":[],"type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"}],"name":"Changed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"addr","type":"address"},{"indexed":false,"name":"name","type":"string"}],"name":"ReverseChanged","type":"event"}]);
+
+var traderegistrarContract = traderegistrarContractabi.at("0x4d97a70490e173781ac3a8604fb0b103c9432eb0");
+var updateEvents = [];
+
+function addTradeStatusUpdateEvent(tradeStatusContract) {
+   var event = tradeStatusContract.StatusUpdated({fromBlock: 0, toBlock: 'latest'});
+   updateEvents.push(event);
+   updateEvents.forEach(function(currentEvent) {
+   // watch for changes
+		currentEvent.watch(function(error, result){
+		if (!error)
+			console.log(result.args);
+			angular.element(document.getElementById('tradegrid')).scope().updateTrade(result);
+		});
+	});
+}
+
+function updateTradeStatusContract(trade,status) {
+	var tradeId = trade["FIL TradeId"];
+	var tradeaddress = traderegistrarContract.addr.call("tradeId" + tradeId);
+	console.log("trade to be updated " + tradeaddress + "tradeId  " + tradeId);
+	var tradeStatusContract = tradeStatusContractabi.at(tradeaddress);
+	tradeStatusContract.updateStatus.sendTransaction(status,{from: web3.eth.accounts[0]});
+}
+ 
+var tradeAddEvent = traderegistrarContract.Changed();
+
+tradeAddEvent.watch(function(error, result) {
+    console.log(error)
+if (!error)
+    var tradeId = result.args.name;
+	var tradeaddress = traderegistrarContract.addr.call(tradeId);
+	console.log("tradeaddress " + tradeaddress + "tradeId  " + tradeId);
+	var tradeStatusContract = tradeStatusContractabi.at(tradeaddress);
+	angular.element(document.getElementById('tradegrid')).scope().addTrade(tradeStatusContract);
+	addTradeStatusUpdateEvent(tradeStatusContract);
+});
+
+</script>
+</head>
+<body>
+     <h1>Accounting</h1>
+	<div id="tradegrid" ng-app="app" ng-controller="MainCtrl">
+	<button type="button" class="btn btn-success" ng-click="send('Accounted')">Account</button>
+  <div ui-grid="trades" ui-grid-selection class="ui-grid"></div>
+</div>
+</body>
+</html>
+

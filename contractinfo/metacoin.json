@@ -1,0 +1,20 @@
+{
+  abi: [{constant: false,inputs: [],name: "getBalances",
+      outputs: [{...}],
+      type: "function"
+  }, {
+      constant: false,
+      inputs: [{...}, {...}],
+      name: "sendCoin",
+      outputs: [{...}],
+      type: "function"
+  }, {
+      inputs: [],
+      type: "constructor"
+  }],
+  address: "0x5c3e468c65bdacb316bd29b31b183af44bd85669",
+  transactionHash: null,
+  allEvents: function(),
+  getBalances: function(),
+  sendCoin: function()
+}
