@@ -5,7 +5,7 @@ app.controller('MainCtrl', ['$scope', '$http', '$log', '$timeout', 'uiGridConsta
     enableSelectAll: true,
     selectionRowHeaderWidth: 35,
     rowHeight: 35,
-    showGridFooter:true
+    showGridFooter:false,
   };
  
   $scope.trades.data = [];

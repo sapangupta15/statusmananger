@@ -1,0 +1,80 @@
+.top-body {
+	height: 10vh;
+	background-color: black;
+}
+
+.fil-system {
+	height: 45vh;
+	border-bottom: 2px solid black;
+	
+}
+
+.accounting-box {
+	border:40px solid black;
+	border-left: 25px solid black !important;
+	height: 45vh;
+}
+
+.trading-box {
+	border:40px solid black;
+	border-right: 25px solid black !important;
+	height: 45vh;
+}
+
+.fil-trade-button {
+	margin-left: 45%;
+}
+
+.logo-fil {
+	min-height:90px !important;
+	background-color: #007CC1; !important;
+}
+
+.fmr-system {
+	height: 45vh;
+	border: 2px solid #1F6C26;
+	/* background-color: #f37937; */
+}
+
+.fil-button-alignment {
+	margin-top: 5%;
+}
+
+.fmr-button-alignment {
+	margin-bottom: 2%;
+}
+
+.ui-grid {
+	height: 135px !important;	
+	width: 98% !important;
+	margin-left: 1% !important;
+}
+
+.fmr-system .ui-grid {
+	width: 60% !important;
+	margin-left: 20% !important;
+}
+
+.app-body {
+	margin: 0 !important;
+}
+.section-header {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	padding-top: 1% !important;
+	padding-bottom: 1% !important;
+}
+
+.fmr-system .navbar-default {
+	background-color: #408800 !important;
+	color: white !important;
+}
+
+.fmr-system .navbar-default .navbar-nav>li>a {
+	color: white !important;
+}
+
+.fmr-nav-bar {
+	min-height: 100px !important;
+	border: 0 !important;
+}

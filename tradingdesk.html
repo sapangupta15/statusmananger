@@ -9,6 +9,10 @@
 <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
 <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
 <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"
+			  integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+			  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="angular-ui-grid/ui-grid.js"></script>
  <script src="app.js"></script>
 <script type="text/javascript" src="web3/dist/web3.js"></script>
@@ -16,6 +20,8 @@
 
 <link rel="styleSheet" href="angular-ui-grid/ui-grid.css"/>
 <link rel="styleSheet" href="main.css"/>
+<link rel="stylesheet" 
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 
 
 
@@ -68,11 +74,69 @@ var traderegistrarContract = traderegistrarContractabi.at("0x4d97a70490e173781ac
 	}
 </script>
 </head>
-<body>
-    <h1>Trading System</h1>
-	<div ng-controller="MainCtrl">
-	<button type="button" class="btn btn-success" ng-click="send()">Book</button>
-  <div ui-grid="trades" ui-grid-selection class="ui-grid"></div>
+<body class="app-body">
+	<section class="top-body"></section>
+	<section class="fil-system">
+			<div class="row">
+				<div class="col-md-6 trading-box">
+					<div class="row">
+						<div class="col-md-4 col-md-offset-1" >
+		                    	<img src="images/fil_logo.jpg" alt="FIL logo" >
+						</div>
+						<div class="col-md-4 col-md-offset-2 fil-button-alignment">
+							<button type="button" class="btn btn-primary fil-trade-button" ng-click="send()">Book Trade</button>
+						</div>
+					</div>
+					<div ng-controller="MainCtrl" style="margin-top: 2%">
+		  				<div ui-grid="trades" ui-grid-selection class="ui-grid" style="margin-top: 1%"></div>
+					</div>
+				</div>
+				<div class="col-md-6 accounting-box">
+					<div class="row">
+						<div class="col-md-4 col-md-offset-1" >
+		                    	<img src="images/fil_logo.jpg" alt="FIL logo" >
+						</div>
+						<div class="col-md-4 col-md-offset-2 fil-button-alignment">
+							<button type="button" class="btn btn-primary fil-trade-button" ng-click="send()">Accounting</button>
+						</div>
+					</div>
+					<div ng-controller="MainCtrl" style="margin-top: 2%">
+		  				<div ui-grid="trades" ui-grid-selection class="ui-grid" style="margin-top: 1%"></div>
+					</div>
+				</div>
+			</div>
+	</section>
+	<section class="fmr-system">
+	<nav class="navbar navbar-default fmr-nav-bar" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="images/fmr_image.jpg" alt="FMR logo" >
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+</nav>
+		<div ng-controller="MainCtrl">
+		<div class="row fmr-button-alignment">
+			<div class="col-md-offset-7 col-md-1">
+				<button type="button" class="btn btn-success" ng-click="send()">Book Trade</button>
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-success" ng-click="send()">Accounting</button>
+			</div>
+		</div>
+	  	<div ui-grid="trades" ui-grid-selection class="ui-grid"></div>
+	</section>
 </div>
 </body>
 </html>
